@@ -1,0 +1,40 @@
+
+name: Build Fabric mod
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle 9.4.0
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.4.0'
+
+      - name: Build mod
+        working-directory: DuplicationLab-0.1.0
+        run: gradle --no-daemon clean build
+
+      - name: Upload mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: DuplicationLab-0.1.0
+          path: DuplicationLab-0.1.0/build/libs/duplab-0.1.0.jar
+          if-no-files-found: error
+          retention-days: 14
