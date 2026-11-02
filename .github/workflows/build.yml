@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -28,13 +29,12 @@ jobs:
           gradle-version: '9.4.0'
 
       - name: Build mod
-        working-directory: DuplicationLab-0.1.0
         run: gradle --no-daemon clean build
 
       - name: Upload mod JAR
         uses: actions/upload-artifact@v4
         with:
           name: DuplicationLab-0.1.0
-          path: DuplicationLab-0.1.0/build/libs/duplab-0.1.0.jar
+          path: build/libs/duplab-0.1.0.jar
           if-no-files-found: error
           retention-days: 14
